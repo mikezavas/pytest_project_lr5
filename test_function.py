@@ -1,12 +1,11 @@
 import pytest
 import random
 
-# Импортируем ваши функции
-from sorting_functions import (
+from sorting_lr3_function import (
     bubble_sort, selection_sort, insertion_sort,
     heap_sort, merge_sort, quick_sort
 )
-from other_functions import (
+from utils_function import (  # Изменил на правильное имя файла
     is_prime, factorial, gcd, celsius_to_kelvin, is_palindrome
 )
 
@@ -31,7 +30,7 @@ def large_array():
 # Тесты сортировок
 @pytest.mark.parametrize("sort_func", [
     bubble_sort, selection_sort, insertion_sort,
-    quick_sort, merge_sort, heap_sort
+    heap_sort, merge_sort, quick_sort
 ])
 @pytest.mark.parametrize("arr,expected", [
     ([], []),

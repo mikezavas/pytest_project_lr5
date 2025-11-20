@@ -1,12 +1,16 @@
-import pytest
+import math
+
 
 # 1
-def bubble_sort(mas: list[int]) -> tuple[list[int], int]:
+def bubble_sort(mas):
     """
     Пузырьковая сортировка - O(n²)
     :param mas: Список интов
     :return: Отсортированный список интов и кол-во итераций
     """
+    if len(mas) <= 1:
+        return mas, 0
+
     n = len(mas)
     count = 0
     for i in range(n - 1):
@@ -17,18 +21,16 @@ def bubble_sort(mas: list[int]) -> tuple[list[int], int]:
     return mas, count
 
 
-mas = list(map(int, input().split()))
-sorted_mas, count = bubble_sort(mas)
-print(*sorted_mas, f"[кол-во итераций: {count}]")
-
-
 # 2
-def selection_sort(nums: list[int]) -> tuple[list[int], int]:
+def selection_sort(nums):
     """
     Сортировка выборкой - O(n²)
     :param nums: список интов
     :return: отсортированный список и количество итераций
     """
+    if len(nums) <= 1:
+        return nums, 0
+
     k = 0
     for i in range(len(nums)):
         index = i
@@ -40,18 +42,16 @@ def selection_sort(nums: list[int]) -> tuple[list[int], int]:
     return nums, k
 
 
-nums = list(map(int, input().split()))
-sorted_nums, k = selection_sort(nums)
-print(*sorted_nums, f"[кол-во итераций: {k}]")
-
-
 # 3
-def insertion_sort(nums: list[int]) -> tuple[list[int], int]:
+def insertion_sort(nums):
     """
     Сортировка вставками - O(n²) в худшем, O(n) в лучшем
     :param nums:
     :return:
     """
+    if len(nums) <= 1:
+        return nums, 0
+
     k = 0
     for i in range(1, len(nums)):
         elem = nums[i]
@@ -62,11 +62,6 @@ def insertion_sort(nums: list[int]) -> tuple[list[int], int]:
         nums[j + 1] = elem
         k += 1
     return nums, k
-
-
-nums = list(map(int, input().split()))
-sorted_nums, k = insertion_sort(nums)
-print(*sorted_nums, f"[кол-во итераций: {k}]")
 
 
 # 4
@@ -83,12 +78,15 @@ def heapify(nums, heap_size, root_index):
         heapify(nums, heap_size, largest)
 
 
-def heap_sort(nums: list[int]) -> tuple[list[int], int]:
+def heap_sort(nums):
     """
     Пирамидальная сортировка - O(n log n)
     :param nums: список интов
     :return: отсортированный список и количество итераций
     """
+    if len(nums) <= 1:
+        return nums, 0
+
     n = len(nums)
     k = 0
     for i in range(n, -1, -1):
@@ -100,11 +98,6 @@ def heap_sort(nums: list[int]) -> tuple[list[int], int]:
         heapify(nums, i, 0)
         k += 1
     return nums, k
-
-
-nums = list(map(int, input().split()))
-sorted_nums, k = heap_sort(nums)
-print(*sorted_nums, f"[кол-во итераций: {k}]")
 
 
 # 5
@@ -131,29 +124,26 @@ def merge_two_list(a, b):
     return c
 
 
-def merge_sort(s: list[int]) -> tuple[list[int], int]:
+def merge_sort(s):
     """
 
     :param s: список интов
     :return: список отсортированный и количество итераций
     """
-    if len(s) == 1:
+    if len(s) <= 1:
         return s, 0
 
     middle = len(s) // 2
-    left, l_count = merge_sort(s[:middle])
-    right, r_count = merge_sort(s[middle:])
+    left = s[:middle]
+    right = s[middle:]
 
-    result = merge_two_list(left, right)
+    left_sorted, l_count = merge_sort(left)
+    right_sorted, r_count = merge_sort(right)
+
+    result = merge_two_list(left_sorted, right_sorted)
     k = 1 + l_count + r_count
 
     return result, k
-
-
-s = list(map(int, input().split()))
-sorted_s, k = merge_sort(s)
-print(*sorted_s, f"[кол-во итераций: {k}]")
-
 
 # 6
 def quick_sort(s):
@@ -179,31 +169,5 @@ def quick_sort(s):
     return result, k
 
 
-s = list(map(int, input().split()))
-sorted_s, k = quick_sort(s)
-print(*sorted_s, f"[кол-во итераций: {k}]")
-
-
-@pytest.mark.parametrize("sort_func", [
-    bubble_sort, selection_sort, insertion_sort,
-    quick_sort, merge_sort, heap_sort
-])
-@pytest.mark.parametrize("arr,expected", [
-    ([], []),
-    ([1], [1]),
-    ([2, 1], [1, 2]),
-    ([3, 1, 2], [1, 2, 3]),
-])
-def test_all_sorts(sort_func, arr, expected):
-    """Тестируем все сортировки"""
-    result, iterations = sort_func(arr.copy())
-    assert result == expected
-    assert iterations >= 0
-
-
-def test_sorts_with_fixture(test_arrays):
-    """Тестируем сортировки с фикстурой"""
-    for name, arr in test_arrays.items():
-        expected = sorted(arr)
-        result, iterations = quick_sort(arr.copy())
-        assert result == expected
+if __name__ == "__main__":
+    s = list(map(int, input().split()))
