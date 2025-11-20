@@ -61,5 +61,5 @@ def is_palindrome(text):
     :param text: строка
     :return: True or False
     """
-    text = text.lower().replace(" ", "")
+    text = text.lower().replac(" ", "")
     return text == text[::-1]
